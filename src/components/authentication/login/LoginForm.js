@@ -1,3 +1,4 @@
+import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
@@ -16,11 +17,13 @@ import {
   FormControlLabel
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
-
+import { authActions } from '../../../store/reducers/authSlice';
+import { authApi } from '../../../apis';
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
@@ -30,6 +33,22 @@ export default function LoginForm() {
     password: Yup.string().required('Password is required')
   });
 
+  const loginHandler = async (username, password) => {
+    const result = await authApi.login({ username, password });
+    if (result.data.code === 200) {
+      const data = {
+        username: result.data.data.user.username,
+        role: result.data.data.user.role[0],
+        token: result.data.token
+      };
+      dispatch(authActions.setUserLogin(data));
+      navigate('/dashboard', { replace: true });
+    }
+    // if (result.data.code === 400) {
+
+    // }
+  };
+
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -37,8 +56,9 @@ export default function LoginForm() {
       remember: true
     },
     validationSchema: LoginSchema,
-    onSubmit: () => {
-      navigate('/dashboard', { replace: true });
+    onSubmit: (values) => {
+      // console.log(values.username, values.password);
+      loginHandler(values.username, values.password);
     }
   });
 

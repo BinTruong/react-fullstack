@@ -1,10 +1,8 @@
-const axios = require("./apiHandler");
+import axios from './apiHandler';
 
-const usersApi = {
-  paging: (payload) => axios.post("/apis/users/paging", { condition: payload }),
-  createUser: (payload) => axios.post("/apis/users/", payload),
-  updateUser: (id, payload) => axios.put("/apis/users/" + id, payload),
-  deleteUser: (payload) => axios.delete("/apis/users/" + payload),
+export const usersApi = {
+  paging: (payload) => axios.post('/apis/users/paging', { condition: payload }),
+  createUser: (payload) => axios.post('/apis/users/', payload),
+  updateUser: (id, payload) => axios.put(`/apis/users/${id}`, payload),
+  deleteUser: (id) => axios.delete(`/apis/users/${id}`)
 };
-
-module.exports = usersApi;

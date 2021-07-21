@@ -1,11 +1,6 @@
-const auth = require("./auth");
-const users = require("./users");
-const books = require("./books");
-const categories = require("./categories");
+import { authApi } from './auth';
+import { usersApi } from './users';
+import { booksApi } from './books';
+import { categoriesApi } from './categories';
 
-module.exports = {
-  authApi: auth,
-  usersApi: users,
-  booksApi: books,
-  categoriesApi: categories,
-};
+export { authApi, usersApi, booksApi, categoriesApi };

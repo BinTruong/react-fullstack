@@ -1,7 +1,8 @@
 // import { filter } from 'lodash';
+import { debounce } from 'lodash';
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
 // material
@@ -147,8 +148,13 @@ export default function User() {
     setPage(1);
   };
 
+  const debounceSearch = useCallback(
+    debounce((value) => setKeyword(value), 1000),
+    []
+  );
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
+    debounceSearch(event.target.value);
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;

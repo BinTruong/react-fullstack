@@ -1,8 +1,8 @@
-import axios from './apiHandler';
+import apiHandler from './apiHandler';
 
 export const authApi = {
-  register: (payload) => axios.post('/apis/auth/register', payload),
-  login: (payload) => axios.post('/apis/auth/login', payload),
-  logout: (payload) => axios.post('/apis/auth/logout', payload),
-  changePassword: (payload) => axios.post('/apis/auth/changePassword', payload)
+  register: (payload) => apiHandler.post('/apis/auth/register', payload),
+  login: (payload) => apiHandler.post('/apis/auth/login', payload),
+  logout: (payload) => apiHandler.post('/apis/auth/logout', payload),
+  changePassword: (payload) => apiHandler.post('/apis/auth/changePassword', payload)
 };

@@ -41,7 +41,7 @@ export default function LoginForm() {
         role: result.data.data.user.role[0],
         token: result.data.token
       };
-      dispatch(authActions.setUserLogin(data));
+      dispatch(authActions.setUserInfo(data));
       navigate('/dashboard', { replace: true });
     }
     // if (result.data.code === 400) {

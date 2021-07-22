@@ -1,3 +1,5 @@
+import { useSelector } from 'react-redux';
+
 import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
 import DashboardLayout from './layouts/dashboard';
@@ -14,10 +16,12 @@ import NotFound from './pages/Page404';
 // ----------------------------------------------------------------------
 
 export default function Router() {
+  const token = useSelector((state) => state.auth.token);
+  const isLoggedIn = !!token;
   return useRoutes([
     {
       path: '/dashboard',
-      element: <DashboardLayout />,
+      element: isLoggedIn ? <DashboardLayout /> : <Navigate to="/login" />,
       children: [
         { path: '/', element: <Navigate to="/dashboard/app" replace /> },
         { path: 'app', element: <DashboardApp /> },
@@ -30,8 +34,8 @@ export default function Router() {
       path: '/',
       element: <LogoOnlyLayout />,
       children: [
-        { path: 'login', element: <Login /> },
-        { path: 'register', element: <Register /> },
+        { path: 'login', element: !isLoggedIn ? <Login /> : <Navigate to="/dashboard" /> },
+        { path: 'register', element: !isLoggedIn ? <Register /> : <Navigate to="/dashboard" /> },
         { path: '404', element: <NotFound /> },
         { path: '/', element: <Navigate to="/dashboard" /> },
         { path: '*', element: <Navigate to="/404" /> }

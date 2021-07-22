@@ -59,7 +59,7 @@ export default function AccountPopover() {
         token: null,
         role: null
       };
-      dispatch(authActions.setUserLogin(data));
+      dispatch(authActions.setUserInfo(data));
       navigate('/login');
     }
     // if (result.data.code === 400) {

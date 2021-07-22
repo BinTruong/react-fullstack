@@ -21,6 +21,7 @@ import {
   TableContainer,
   TablePagination
 } from '@material-ui/core';
+import LinearProgress from '@material-ui/core/LinearProgress';
 // components
 import Page from '../components/Page';
 import Label from '../components/Label';
@@ -83,9 +84,11 @@ export default function User() {
   const [totalDocs, setTotalDocs] = useState(0);
   const [users, setUsers] = useState([]);
   const [keyWord, setKeyword] = useState('');
+  const [isLoading, setIsLoading] = useState();
 
   useEffect(() => {
     const getUser = async () => {
+      setIsLoading(false);
       const conditions = {
         keyword: keyWord,
         page,
@@ -102,6 +105,7 @@ export default function User() {
         setTotalDocs(totalDocs);
         setUsers(userList);
       }
+      setIsLoading(true);
     };
     getUser();
   }, [page, rowsPerPage, keyWord, order, orderBy]);
@@ -181,6 +185,7 @@ export default function User() {
         </Stack>
 
         <Card>
+          {!isLoading && <LinearProgress />}
           <UserListToolbar
             // numSelected={selected.length}
             filterName={filterName}

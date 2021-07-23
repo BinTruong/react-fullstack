@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 // material
 import { Stack, TextField, IconButton, InputAdornment } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
+import { authApi } from '../../../apis';
 
 // ----------------------------------------------------------------------
 
@@ -21,20 +22,38 @@ export default function RegisterForm() {
       .max(50, 'Too Long!')
       .required('First name required'),
     lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
-    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
+    username: Yup.string()
+      .max(30, 'username must be a valid username address')
+      .required('Username is required'),
     password: Yup.string().required('Password is required')
   });
+
+  const registerHandler = async (username, password, firstName, lastName) => {
+    const result = await authApi.register({ username, password, firstName, lastName });
+    if (result.data.code === 200) {
+      // const data = {
+      //   username: result.data.data.user.username,
+      //   role: result.data.data.user.role[0],
+      //   token: result.data.token
+      // };
+      // dispatch(authActions.setUserInfo(data));
+      navigate('/login', { replace: true });
+    }
+    // if (result.data.code === 400) {
+
+    // }
+  };
 
   const formik = useFormik({
     initialValues: {
       firstName: '',
       lastName: '',
-      email: '',
+      username: '',
       password: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: () => {
-      navigate('/dashboard', { replace: true });
+    onSubmit: (values) => {
+      registerHandler(values.username, values.password, values.firstName, values.lastName);
     }
   });
 
@@ -64,12 +83,12 @@ export default function RegisterForm() {
 
           <TextField
             fullWidth
-            autoComplete="username"
-            type="email"
-            label="Email address"
-            {...getFieldProps('email')}
-            error={Boolean(touched.email && errors.email)}
-            helperText={touched.email && errors.email}
+            // autoComplete="username"
+            type="text"
+            label="User name"
+            {...getFieldProps('username')}
+            error={Boolean(touched.username && errors.username)}
+            helperText={touched.username && errors.username}
           />
 
           <TextField

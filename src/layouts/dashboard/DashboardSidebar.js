@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 // material
 import { experimentalStyled as styled } from '@material-ui/core/styles';
@@ -10,7 +12,7 @@ import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
 import { MHidden } from '../../components/@material-extend';
 //
-import sidebarConfig from './SidebarConfig';
+import { getSidebarConfig } from './SidebarConfig';
 import account from '../../_mocks_/account';
 
 // ----------------------------------------------------------------------
@@ -39,8 +41,11 @@ DashboardSidebar.propTypes = {
   onCloseSidebar: PropTypes.func
 };
 
-export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
+export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar, role }) {
   const { pathname } = useLocation();
+  const displayName = useSelector((state) => state.auth.username);
+  const displayRole = useSelector((state) => state.auth.role);
+  const sidebarConfig = getSidebarConfig(role);
 
   useEffect(() => {
     if (isOpenSidebar) {
@@ -68,10 +73,10 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             <Avatar src={account.photoURL} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
+                {displayName}
               </Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {account.role}
+                {displayRole}
               </Typography>
             </Box>
           </AccountStyle>
@@ -82,7 +87,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
 
       <Box sx={{ flexGrow: 1 }} />
 
-      <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
+      {/* <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
         <Stack
           alignItems="center"
           spacing={3}
@@ -113,7 +118,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             Upgrade to Pro
           </Button>
         </Stack>
-      </Box>
+      </Box> */}
     </Scrollbar>
   );
 

@@ -18,11 +18,6 @@ const sidebarConfig = [
     icon: getIcon(pieChart2Fill)
   },
   {
-    title: 'user',
-    path: '/dashboard/user',
-    icon: getIcon(peopleFill)
-  },
-  {
     title: 'product',
     path: '/dashboard/products',
     icon: getIcon(shoppingBagFill)
@@ -32,6 +27,11 @@ const sidebarConfig = [
     path: '/dashboard/blog',
     icon: getIcon(fileTextFill)
   }
+  // {
+  //   title: 'user',
+  //   path: '/dashboard/user',
+  //   icon: getIcon(peopleFill)
+  // }
   // {
   //   title: 'login',
   //   path: '/login',
@@ -49,4 +49,20 @@ const sidebarConfig = [
   // }
 ];
 
-export default sidebarConfig;
+const siderAdmin = {
+  title: 'user',
+
+  path: '/dashboard/user',
+
+  icon: getIcon(peopleFill)
+};
+
+const getSidebarConfig = (role) => {
+  if (role === 'admin') {
+    return [...sidebarConfig, siderAdmin];
+  }
+
+  return sidebarConfig;
+};
+
+export { getSidebarConfig };

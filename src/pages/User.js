@@ -2,7 +2,7 @@
 import { debounce } from 'lodash';
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
 // material
@@ -110,6 +110,7 @@ export default function User() {
     getUser();
   }, [page, rowsPerPage, keyWord, order, orderBy]);
 
+  //! Change sort
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === '';
     setOrder(isAsc ? '-' : '');
@@ -142,21 +143,22 @@ export default function User() {
   //   }
   //   setSelected(newSelected);
   // };
-
+  //! Change page
   const handleChangePage = (event, newPage) => {
     setPage(newPage + 1);
   };
 
+  //! Change page row
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(1);
   };
 
-  const debounceSearch = useCallback(
-    debounce((value) => setKeyword(value), 1000),
-    []
-  );
+  //! Search
+  const debounceSearch = useRef(debounce((value) => setKeyword(value), 1000)).current;
   const handleFilterByName = (event) => {
+    setPage(1);
+    setRowsPerPage(5);
     setFilterName(event.target.value);
     debounceSearch(event.target.value);
   };
@@ -199,18 +201,18 @@ export default function User() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={users.length}
+                  // rowCount={users.length}
                   // numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   // onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
                   {users.map((row) => {
-                    const { id, username, firstName, lastName, role } = row;
+                    const { _id, username, firstName, lastName, role } = row;
                     return (
                       <TableRow
                         hover
-                        key={id}
+                        key={_id}
                         tabIndex={-1}
                         role="checkbox"
                         // selected={isItemSelected}

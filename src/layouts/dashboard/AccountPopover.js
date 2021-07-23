@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Icon } from '@iconify/react';
 import { useRef, useState } from 'react';
@@ -67,6 +67,8 @@ export default function AccountPopover() {
     // }
   };
 
+  const displayName = useSelector((state) => state.auth.username);
+
   return (
     <>
       <IconButton
@@ -100,11 +102,11 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-            {account.displayName}
+            {displayName}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+          {/* <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
             {account.email}
-          </Typography>
+          </Typography> */}
         </Box>
 
         <Divider sx={{ my: 1 }} />

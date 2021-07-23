@@ -8,7 +8,7 @@ import { Box, TableRow, TableCell, TableHead, TableSortLabel } from '@material-u
 UserListHead.propTypes = {
   order: PropTypes.oneOf(['', '-']),
   orderBy: PropTypes.string,
-  rowCount: PropTypes.number,
+  // rowCount: PropTypes.number,
   headLabel: PropTypes.array,
   // numSelected: PropTypes.number,
   onRequestSort: PropTypes.func

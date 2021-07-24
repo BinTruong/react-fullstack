@@ -18,12 +18,19 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { usersApi } from '../../../apis';
 
-export default function UserDialogAdd({ open, handleClose, setIsCreate }) {
+export default function UserDialogEdit({
+  openDialogEdit,
+  handleCloseDialogEdit,
+  setIsEdit,
+  row,
+  setIsOpen
+}) {
   const [showPassword, setShowPassword] = useState(false);
-  const [role, setRole] = useState('normal');
+  const { _id, username, firstName, lastName, role } = row;
+  const [roleUser, setRoleUser] = useState(role[0]);
 
   const handleChangeRole = (event) => {
-    setRole(event.target.value);
+    setRoleUser(event.target.value);
   };
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -33,33 +40,42 @@ export default function UserDialogAdd({ open, handleClose, setIsCreate }) {
     lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
     username: Yup.string()
       .max(30, 'username must be a valid username address')
-      .required('Username is required'),
-    password: Yup.string().required('Password is required')
+      .required('Username is required')
+    // password: Yup.string().required('Password is required')
   });
 
-  const addUserHandler = async (username, password, firstName, lastName, role) => {
-    const result = await usersApi.createUser({ username, password, firstName, lastName, role });
+  const updateUserHandler = async (_is, username, password, firstName, lastName, roleUser) => {
+    const result = await usersApi.updateUser(_id, {
+      username,
+      password,
+      firstName,
+      lastName,
+      role: roleUser
+    });
     if (result.data.code === 200) {
-      handleClose();
-      setIsCreate((prev) => !prev);
+      handleCloseDialogEdit();
+      setIsEdit((prev) => !prev);
+      setIsOpen(false);
     }
   };
 
   const formik = useFormik({
     initialValues: {
-      firstName: '',
-      lastName: '',
-      username: '',
+      firstName,
+      lastName,
+      username,
       password: ''
     },
     validationSchema: RegisterSchema,
     onSubmit: (values) => {
-      addUserHandler(values.username, values.password, values.firstName, values.lastName, role);
-      values.username = '';
-      values.password = '';
-      values.firstName = '';
-      values.lastName = '';
-      setRole('normal');
+      updateUserHandler(
+        _id,
+        values.username,
+        values.password,
+        values.firstName,
+        values.lastName,
+        roleUser
+      );
     }
   });
 
@@ -67,17 +83,17 @@ export default function UserDialogAdd({ open, handleClose, setIsCreate }) {
   return (
     <div>
       <Dialog
-        open={open}
-        onClose={handleClose}
+        open={openDialogEdit}
+        onClose={handleCloseDialogEdit}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Add User</DialogTitle>
+        <DialogTitle id="alert-dialog-title">Edit User</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             <FormikProvider value={formik}>
               <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-                <Stack spacing={3}>
+                <Stack spacing={3} m={1}>
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
                     <TextField
                       fullWidth
@@ -121,8 +137,8 @@ export default function UserDialogAdd({ open, handleClose, setIsCreate }) {
                         </InputAdornment>
                       )
                     }}
-                    error={Boolean(touched.password && errors.password)}
-                    helperText={touched.password && errors.password}
+                    // error={Boolean(touched.password && errors.password)}
+                    // helperText={touched.password && errors.password}
                   />
 
                   <FormControl fullWidth>
@@ -130,7 +146,7 @@ export default function UserDialogAdd({ open, handleClose, setIsCreate }) {
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={role}
+                      value={roleUser}
                       label="Role"
                       onChange={handleChangeRole}
                     >
@@ -147,7 +163,7 @@ export default function UserDialogAdd({ open, handleClose, setIsCreate }) {
                     variant="contained"
                     // loading={isSubmitting}
                   >
-                    Add
+                    Update
                   </LoadingButton>
                 </Stack>
               </Form>
@@ -155,8 +171,8 @@ export default function UserDialogAdd({ open, handleClose, setIsCreate }) {
           </DialogContentText>
         </DialogContent>
         {/* <DialogActions>
-          <Button onClick={handleClose}>Disagree</Button>
-          <Button onClick={handleClose} autoFocus>
+          <Button onClick={handleCloseDialogEdit}>Disagree</Button>
+          <Button onClick={handleCloseDialogEdit} autoFocus>
             Agree
           </Button>
         </DialogActions> */}

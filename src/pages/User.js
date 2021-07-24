@@ -87,6 +87,7 @@ export default function User() {
   const [isLoading, setIsLoading] = useState();
   const [open, setOpen] = useState(false);
   const [isCreate, setIsCreate] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
   const [isRemove, setIsRemove] = useState(false);
 
   const handleClickOpen = () => {
@@ -119,7 +120,7 @@ export default function User() {
       setIsLoading(true);
     };
     getUser();
-  }, [page, rowsPerPage, keyWord, order, orderBy, isCreate, isRemove]);
+  }, [page, rowsPerPage, keyWord, order, orderBy, isCreate, isRemove, isEdit]);
 
   //! Change sort
   const handleRequestSort = (event, property) => {
@@ -187,7 +188,7 @@ export default function User() {
         <Container>
           <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h4" gutterBottom>
-              User
+              User Management
             </Typography>
             <Button
               variant="contained"
@@ -262,7 +263,12 @@ export default function User() {
                           </TableCell>
 
                           <TableCell align="right">
-                            <UserMoreMenu _id={_id} setIsRemove={setIsRemove} />
+                            <UserMoreMenu
+                              _id={_id}
+                              setIsRemove={setIsRemove}
+                              setIsEdit={setIsEdit}
+                              row={row}
+                            />
                           </TableCell>
                         </TableRow>
                       );

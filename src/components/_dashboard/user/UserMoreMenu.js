@@ -10,11 +10,11 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
-// import UserDialogEdit from '../../dialog/dialogUser/dialogUserAdd';
+import UserDialogEdit from '../../dialog/dialogUser/dialogUserEdit';
 import { usersApi } from '../../../apis';
 // ----------------------------------------------------------------------
 
-export default function UserMoreMenu({ _id, setIsRemove }) {
+export default function UserMoreMenu({ _id, setIsRemove, setIsEdit, row }) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [openDialogDelete, setOpenDialogDelete] = useState(false);
@@ -102,10 +102,13 @@ export default function UserMoreMenu({ _id, setIsRemove }) {
         </DialogActions>
       </Dialog>
 
-      {/* <UserDialogEdit
+      <UserDialogEdit
         openDialogEdit={openDialogEdit}
         handleCloseDialogEdit={handleCloseDialogEdit}
-      /> */}
+        setIsEdit={setIsEdit}
+        row={row}
+        setIsOpen={setIsOpen}
+      />
     </>
   );
 }

@@ -28,7 +28,7 @@ import Label from '../components/Label';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../components/_dashboard/user';
-
+import UserDialogAdd from '../components/dialog/dialogUser/dialogUserAdd';
 //
 // import users from '../_mocks_/user';
 import { usersApi } from '../apis';
@@ -76,15 +76,26 @@ const TABLE_HEAD = [
 
 export default function User() {
   const [page, setPage] = useState(1);
-  const [order, setOrder] = useState('');
+  const [order, setOrder] = useState('-');
   // const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState('username');
+  const [orderBy, setOrderBy] = useState('_id');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [totalDocs, setTotalDocs] = useState(0);
   const [users, setUsers] = useState([]);
   const [keyWord, setKeyword] = useState('');
   const [isLoading, setIsLoading] = useState();
+  const [open, setOpen] = useState(false);
+  const [isCreate, setIsCreate] = useState(false);
+  const [isRemove, setIsRemove] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     const getUser = async () => {
@@ -108,7 +119,7 @@ export default function User() {
       setIsLoading(true);
     };
     getUser();
-  }, [page, rowsPerPage, keyWord, order, orderBy]);
+  }, [page, rowsPerPage, keyWord, order, orderBy, isCreate, isRemove]);
 
   //! Change sort
   const handleRequestSort = (event, property) => {
@@ -170,121 +181,125 @@ export default function User() {
   const isUserNotFound = users.length === 0;
 
   return (
-    <Page title="User | Minimal-UI">
-      <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
-            User
-          </Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to="#"
-            startIcon={<Icon icon={plusFill} />}
-          >
-            New User
-          </Button>
-        </Stack>
+    <>
+      <UserDialogAdd open={open} handleClose={handleClose} setIsCreate={setIsCreate} />
+      <Page title="User | Minimal-UI">
+        <Container>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+            <Typography variant="h4" gutterBottom>
+              User
+            </Typography>
+            <Button
+              variant="contained"
+              component={RouterLink}
+              to="#"
+              startIcon={<Icon icon={plusFill} />}
+              onClick={handleClickOpen}
+            >
+              New User
+            </Button>
+          </Stack>
 
-        <Card>
-          {!isLoading && <LinearProgress />}
-          <UserListToolbar
-            // numSelected={selected.length}
-            filterName={filterName}
-            onFilterName={handleFilterByName}
-          />
+          <Card>
+            {!isLoading && <LinearProgress />}
+            <UserListToolbar
+              // numSelected={selected.length}
+              filterName={filterName}
+              onFilterName={handleFilterByName}
+            />
 
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  // rowCount={users.length}
-                  // numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  // onSelectAllClick={handleSelectAllClick}
-                />
-                <TableBody>
-                  {users.map((row) => {
-                    const { _id, username, firstName, lastName, role } = row;
-                    return (
-                      <TableRow
-                        hover
-                        key={_id}
-                        tabIndex={-1}
-                        role="checkbox"
-                        // selected={isItemSelected}
-                        // aria-checked={isItemSelected}
-                      >
-                        {/* <TableCell padding="checkbox">
+            <Scrollbar>
+              <TableContainer sx={{ minWidth: 800 }}>
+                <Table>
+                  <UserListHead
+                    order={order}
+                    orderBy={orderBy}
+                    headLabel={TABLE_HEAD}
+                    // rowCount={users.length}
+                    // numSelected={selected.length}
+                    onRequestSort={handleRequestSort}
+                    // onSelectAllClick={handleSelectAllClick}
+                  />
+                  <TableBody>
+                    {users.map((row) => {
+                      const { _id, username, firstName, lastName, role } = row;
+                      return (
+                        <TableRow
+                          hover
+                          key={_id}
+                          tabIndex={-1}
+                          role="checkbox"
+                          // selected={isItemSelected}
+                          // aria-checked={isItemSelected}
+                        >
+                          {/* <TableCell padding="checkbox">
                             <Checkbox
                               checked={isItemSelected}
                               onChange={(event) => handleClick(event, name)}
                             />
                           </TableCell> */}
-                        <TableCell component="th" scope="row" px={2}>
-                          <Typography variant="subtitle2" noWrap>
-                            {username}
-                          </Typography>
-                        </TableCell>
-                        <TableCell align="left">{firstName}</TableCell>
-                        <TableCell align="left">{lastName}</TableCell>
-                        <TableCell align="left">
-                          <Label
-                            variant="ghost"
-                            color={
-                              // eslint-disable-next-line no-nested-ternary
-                              role[0] === 'admin'
-                                ? 'success'
-                                : role[0] === 'contributor'
-                                ? 'warning'
-                                : 'info'
-                            }
-                          >
-                            {sentenceCase(role[0])}
-                          </Label>
-                        </TableCell>
+                          <TableCell component="th" scope="row" px={2}>
+                            <Typography variant="subtitle2" noWrap>
+                              {username}
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="left">{firstName}</TableCell>
+                          <TableCell align="left">{lastName}</TableCell>
+                          <TableCell align="left">
+                            <Label
+                              variant="ghost"
+                              color={
+                                // eslint-disable-next-line no-nested-ternary
+                                role[0] === 'admin'
+                                  ? 'success'
+                                  : role[0] === 'contributor'
+                                  ? 'warning'
+                                  : 'info'
+                              }
+                            >
+                              {sentenceCase(role[0])}
+                            </Label>
+                          </TableCell>
 
-                        <TableCell align="right">
-                          <UserMoreMenu />
+                          <TableCell align="right">
+                            <UserMoreMenu _id={_id} setIsRemove={setIsRemove} />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                    {emptyRows > 0 && (
+                      <TableRow>
+                        <TableCell colSpan={6} />
+                      </TableRow>
+                    )}
+                  </TableBody>
+                  {isUserNotFound && (
+                    <TableBody>
+                      <TableRow>
+                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                          <SearchNotFound searchQuery={filterName} />
                         </TableCell>
                       </TableRow>
-                    );
-                  })}
-                  {emptyRows > 0 && (
-                    <TableRow>
-                      <TableCell colSpan={6} />
-                    </TableRow>
+                    </TableBody>
                   )}
-                </TableBody>
-                {isUserNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <SearchNotFound searchQuery={filterName} />
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
-              </Table>
-            </TableContainer>
-          </Scrollbar>
+                </Table>
+              </TableContainer>
+            </Scrollbar>
 
-          {!isUserNotFound && (
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={totalDocs}
-              rowsPerPage={rowsPerPage}
-              page={page - 1}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          )}
-        </Card>
-      </Container>
-    </Page>
+            {!isUserNotFound && (
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={totalDocs}
+                rowsPerPage={rowsPerPage}
+                page={page - 1}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            )}
+          </Card>
+        </Container>
+      </Page>
+    </>
   );
 }

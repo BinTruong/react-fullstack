@@ -28,7 +28,7 @@ export default function UserListHead({
     onRequestSort(event, property);
   };
 
-  const direction = order === '' ? 'asc' : 'desc';
+  const direction = order === '-' ? 'asc' : 'desc';
 
   return (
     <TableHead>

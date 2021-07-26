@@ -41,11 +41,11 @@ DashboardSidebar.propTypes = {
   onCloseSidebar: PropTypes.func
 };
 
-export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar, role }) {
+export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
   const displayName = useSelector((state) => state.auth.username);
   const displayRole = useSelector((state) => state.auth.role);
-  const sidebarConfig = getSidebarConfig(role);
+  const sidebarConfig = getSidebarConfig(displayRole);
 
   useEffect(() => {
     if (isOpenSidebar) {

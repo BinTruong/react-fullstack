@@ -44,7 +44,7 @@ export default function UserDialogEdit({
     // password: Yup.string().required('Password is required')
   });
 
-  const updateUserHandler = async (_is, username, password, firstName, lastName, roleUser) => {
+  const updateUserHandler = async (_id, username, password, firstName, lastName, roleUser) => {
     const result = await usersApi.updateUser(_id, {
       username,
       password,

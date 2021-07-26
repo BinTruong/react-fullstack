@@ -1,6 +1,7 @@
 import { Icon } from '@iconify/react';
 import pieChart2Fill from '@iconify/icons-eva/pie-chart-2-fill';
 import peopleFill from '@iconify/icons-eva/people-fill';
+import pantoneOutline from '@iconify/icons-eva/pantone-outline';
 import shoppingBagFill from '@iconify/icons-eva/shopping-bag-fill';
 import fileTextFill from '@iconify/icons-eva/file-text-fill';
 // import lockFill from '@iconify/icons-eva/lock-fill';
@@ -49,17 +50,22 @@ const sidebarConfig = [
   // }
 ];
 
-const siderAdmin = {
-  title: 'user',
-
-  path: '/dashboard/user',
-
-  icon: getIcon(peopleFill)
-};
+const siderAdmin = [
+  {
+    title: 'user',
+    path: '/dashboard/user',
+    icon: getIcon(peopleFill)
+  },
+  {
+    title: 'category',
+    path: '/dashboard/category',
+    icon: getIcon(pantoneOutline)
+  }
+];
 
 const getSidebarConfig = (role) => {
   if (role === 'admin') {
-    return [...sidebarConfig, siderAdmin];
+    return [...sidebarConfig, ...siderAdmin];
   }
 
   return sidebarConfig;

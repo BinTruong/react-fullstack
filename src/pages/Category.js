@@ -151,7 +151,7 @@ export default function Category() {
   return (
     <>
       <CategoryDialogAdd open={open} handleClose={handleClose} setIsCreate={setIsCreate} />
-      <Page title="User | Minimal-UI">
+      <Page title="Categories | Minimal-UI">
         <Container>
           <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h4" gutterBottom>

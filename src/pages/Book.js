@@ -235,12 +235,13 @@ export default function Book() {
                           </TableCell>
 
                           <TableCell align="right">
-                            {/* <BookMoreMenu
+                            <BookMoreMenu
                               _id={_id}
                               setIsRemove={setIsRemove}
                               setIsEdit={setIsEdit}
-                              // row={row}
-                            /> */}
+                              row={row}
+                              listCategory={listCategory}
+                            />
                           </TableCell>
                         </TableRow>
                       );

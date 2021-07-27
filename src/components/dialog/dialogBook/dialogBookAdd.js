@@ -7,13 +7,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { Stack, TextField, IconButton, InputAdornment } from '@material-ui/core';
+import { Stack, TextField } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-// import { usersApi } from '../../../apis';
+import { booksApi } from '../../../apis';
 
 export default function BookDialogAdd({
   open,
@@ -23,6 +23,18 @@ export default function BookDialogAdd({
   defaultCategory
 }) {
   const [category, setCategory] = useState(defaultCategory);
+  const [file, setFile] = useState(null);
+  const [cover, setCover] = useState(null);
+
+  const fileHandler = (event) => {
+    console.log(event.target.files[0]);
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      setFile(e.target.result);
+    };
+    setCover(event.target.files[0]);
+    reader.readAsDataURL(event.target.files[0]);
+  };
 
   const handleAddCategory = (event) => {
     setCategory(event.target.value);
@@ -34,13 +46,22 @@ export default function BookDialogAdd({
     author: Yup.string().required('Author is required')
   });
 
-  // const addBookHandler = async (title, description, author) => {
-  //   const result = await usersApi.createBook({ author, password, title, description, category });
-  //   if (result.data.code === 200) {
-  //     handleClose();
-  //     setIsCreate((prev) => !prev);
-  //   }
-  // };
+  const addBookHandler = async (title, description, author, category) => {
+    const data = {
+      title,
+      description,
+      author,
+      category
+    };
+    if (cover) {
+      data.cover = cover;
+    }
+    const result = await booksApi.createBook(data);
+    if (result.data.code === 200) {
+      handleClose();
+      setIsCreate((prev) => !prev);
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -51,12 +72,12 @@ export default function BookDialogAdd({
     },
     validationSchema: RegisterSchema,
     onSubmit: (values) => {
-      // addBookHandler(values.author, values.password, values.title, values.description, category);
-      // values.author = '';
-      // values.password = '';
-      // values.title = '';
-      // values.description = '';
-      // setCategory('normal');
+      addBookHandler(values.title, values.description, values.author, category);
+      setCategory(defaultCategory);
+      setFile(null);
+      values.title = '';
+      values.description = '';
+      values.author = '';
     }
   });
 
@@ -75,6 +96,10 @@ export default function BookDialogAdd({
             <FormikProvider value={formik}>
               <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
                 <Stack spacing={3} p={1}>
+                  <Stack>
+                    {file && <img src={file} style={{ height: '200px' }} alt="cover" />}
+                    <input type="file" onChange={fileHandler} />
+                  </Stack>
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
                     <TextField
                       fullWidth
@@ -117,6 +142,8 @@ export default function BookDialogAdd({
                   <TextField
                     fullWidth
                     label="Description"
+                    multiline
+                    rows={4}
                     {...getFieldProps('description')}
                     error={Boolean(touched.description && errors.description)}
                     helperText={touched.description && errors.description}

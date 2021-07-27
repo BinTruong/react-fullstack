@@ -1,3 +1,4 @@
+import { useToasts } from 'react-toast-notifications';
 import * as Yup from 'yup';
 import { useState, useEffect } from 'react';
 // import Button from '@material-ui/core/Button';
@@ -25,6 +26,8 @@ export default function BookDialogAdd({
   const [category, setCategory] = useState(defaultCategory);
   const [file, setFile] = useState(null);
   const [cover, setCover] = useState(null);
+
+  const { addToast } = useToasts();
 
   const fileHandler = (event) => {
     console.log(event.target.files[0]);
@@ -60,6 +63,9 @@ export default function BookDialogAdd({
     if (result.data.code === 200) {
       handleClose();
       setIsCreate((prev) => !prev);
+      addToast('Add Book Successfully', { appearance: 'success' });
+    } else {
+      addToast('Something wrong, Please try again!', { appearance: 'warning' });
     }
   };
 
@@ -71,8 +77,8 @@ export default function BookDialogAdd({
       password: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: (values) => {
-      addBookHandler(values.title, values.description, values.author, category);
+    onSubmit: async (values) => {
+      await addBookHandler(values.title, values.description, values.author, category);
       setCategory(defaultCategory);
       setFile(null);
       values.title = '';

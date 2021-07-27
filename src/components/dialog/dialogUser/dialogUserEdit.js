@@ -1,3 +1,4 @@
+import { useToasts } from 'react-toast-notifications';
 import * as Yup from 'yup';
 import { useState } from 'react';
 // import Button from '@material-ui/core/Button';
@@ -29,6 +30,8 @@ export default function UserDialogEdit({
   const { _id, username, firstName, lastName, role } = row;
   const [roleUser, setRoleUser] = useState(role[0]);
 
+  const { addToast } = useToasts();
+
   const handleChangeRole = (event) => {
     setRoleUser(event.target.value);
   };
@@ -53,9 +56,12 @@ export default function UserDialogEdit({
       role: roleUser
     });
     if (result.data.code === 200) {
+      addToast('Edit User Successfully', { appearance: 'success' });
       handleCloseDialogEdit();
       setIsEdit((prev) => !prev);
       setIsOpen(false);
+    } else {
+      addToast('Something wrong, Please try again!', { appearance: 'warning' });
     }
   };
 
@@ -67,8 +73,8 @@ export default function UserDialogEdit({
       password: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: (values) => {
-      updateUserHandler(
+    onSubmit: async (values) => {
+      await updateUserHandler(
         _id,
         values.username,
         values.password,

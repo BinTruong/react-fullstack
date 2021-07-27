@@ -1,3 +1,4 @@
+import { useToasts } from 'react-toast-notifications';
 import * as Yup from 'yup';
 // import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -17,11 +18,16 @@ export default function CategoryDialogAdd({ open, handleClose, setIsCreate }) {
       .required('Username is required')
   });
 
+  const { addToast } = useToasts();
+
   const addUserHandler = async (title) => {
     const result = await categoriesApi.createCategory({ title });
     if (result.data.code === 200) {
       handleClose();
       setIsCreate((prev) => !prev);
+      addToast('Add Category Successfully', { appearance: 'success' });
+    } else {
+      addToast('Something wrong, Please try again!', { appearance: 'warning' });
     }
   };
 
@@ -30,8 +36,8 @@ export default function CategoryDialogAdd({ open, handleClose, setIsCreate }) {
       title: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: (values) => {
-      addUserHandler(values.title);
+    onSubmit: async (values) => {
+      await addUserHandler(values.title);
       values.title = '';
     }
   });

@@ -1,3 +1,4 @@
+import { useToasts } from 'react-toast-notifications';
 import * as Yup from 'yup';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -17,6 +18,8 @@ export default function CategoryDialogEdit({
 }) {
   const { _id, title } = row;
 
+  const { addToast } = useToasts();
+
   const RegisterSchema = Yup.object().shape({
     title: Yup.string().max(30, 'title must be a valid').required('title is required')
     // password: Yup.string().required('Password is required')
@@ -30,6 +33,9 @@ export default function CategoryDialogEdit({
       handleCloseDialogEdit();
       setIsEdit((prev) => !prev);
       setIsOpen(false);
+      addToast('Edit Category  Successfully', { appearance: 'success' });
+    } else {
+      addToast('Something wrong, Please try again!', { appearance: 'warning' });
     }
   };
 

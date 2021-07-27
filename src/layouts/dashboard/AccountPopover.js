@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-
+import { useToasts } from 'react-toast-notifications';
 import { Icon } from '@iconify/react';
 import { useRef, useState } from 'react';
 import homeFill from '@iconify/icons-eva/home-fill';
@@ -45,6 +45,8 @@ export default function AccountPopover() {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
+  const { addToast } = useToasts();
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -60,6 +62,7 @@ export default function AccountPopover() {
         role: null
       };
       dispatch(authActions.setUserInfo(data));
+      addToast('Logout Successfully', { appearance: 'success' });
       navigate('/login');
     }
     // if (result.data.code === 400) {

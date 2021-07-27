@@ -1,3 +1,4 @@
+import { useToasts } from 'react-toast-notifications';
 import * as Yup from 'yup';
 import { useState } from 'react';
 // import Button from '@material-ui/core/Button';
@@ -22,6 +23,8 @@ export default function UserDialogAdd({ open, handleClose, setIsCreate }) {
   const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState('normal');
 
+  const { addToast } = useToasts();
+
   const handleChangeRole = (event) => {
     setRole(event.target.value);
   };
@@ -40,8 +43,11 @@ export default function UserDialogAdd({ open, handleClose, setIsCreate }) {
   const addUserHandler = async (username, password, firstName, lastName, role) => {
     const result = await usersApi.createUser({ username, password, firstName, lastName, role });
     if (result.data.code === 200) {
+      addToast('Add User Successfully', { appearance: 'success' });
       handleClose();
       setIsCreate((prev) => !prev);
+    } else {
+      addToast('Something wrong, Please try again!', { appearance: 'warning' });
     }
   };
 
@@ -53,8 +59,14 @@ export default function UserDialogAdd({ open, handleClose, setIsCreate }) {
       password: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: (values) => {
-      addUserHandler(values.username, values.password, values.firstName, values.lastName, role);
+    onSubmit: async (values) => {
+      await addUserHandler(
+        values.username,
+        values.password,
+        values.firstName,
+        values.lastName,
+        role
+      );
       values.username = '';
       values.password = '';
       values.firstName = '';

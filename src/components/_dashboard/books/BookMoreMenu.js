@@ -1,3 +1,4 @@
+import { useToasts } from 'react-toast-notifications';
 import { Icon } from '@iconify/react';
 import { useRef, useState } from 'react';
 import editFill from '@iconify/icons-eva/edit-fill';
@@ -20,6 +21,8 @@ export default function BookMoreMenu({ _id, setIsRemove, setIsEdit, row, listCat
   const [openDialogDelete, setOpenDialogDelete] = useState(false);
   const [openDialogEdit, setOpenDialogEdit] = useState(false);
 
+  const { addToast } = useToasts();
+
   const handleClickOpenDialogDelete = () => {
     setOpenDialogDelete(true);
   };
@@ -41,6 +44,9 @@ export default function BookMoreMenu({ _id, setIsRemove, setIsEdit, row, listCat
     if (result.data.code === 200) {
       handleCloseDialogDelete();
       setIsRemove((prev) => !prev);
+      addToast('Delete Book Successfully', { appearance: 'success' });
+    } else {
+      addToast('Something wrong, Please try again!', { appearance: 'warning' });
     }
   };
 

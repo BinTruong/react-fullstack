@@ -1,3 +1,4 @@
+import { useToasts } from 'react-toast-notifications';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { useState } from 'react';
@@ -33,6 +34,8 @@ export default function LoginForm() {
     password: Yup.string().required('Password is required')
   });
 
+  const { addToast } = useToasts();
+
   const loginHandler = async (username, password) => {
     const result = await authApi.login({ username, password });
     if (result.data.code === 200) {
@@ -42,7 +45,10 @@ export default function LoginForm() {
         token: result.data.token
       };
       dispatch(authActions.setUserInfo(data));
+      addToast('Login Successfully', { appearance: 'success' });
       navigate('/dashboard', { replace: true });
+    } else {
+      addToast('Something wrong, Please try again!', { appearance: 'warning' });
     }
     // if (result.data.code === 400) {
 
@@ -56,9 +62,11 @@ export default function LoginForm() {
       remember: true
     },
     validationSchema: LoginSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       // console.log(values.username, values.password);
-      loginHandler(values.username, values.password);
+      await loginHandler(values.username, values.password);
+      values.username = '';
+      values.password = '';
     }
   });
 
@@ -118,7 +126,7 @@ export default function LoginForm() {
           size="large"
           type="submit"
           variant="contained"
-          loading={isSubmitting}
+          // loading={isSubmitting}
         >
           Login
         </LoadingButton>

@@ -1,3 +1,4 @@
+import { useToasts } from 'react-toast-notifications';
 import * as Yup from 'yup';
 import { useState } from 'react';
 // import Button from '@material-ui/core/Button';
@@ -30,6 +31,8 @@ export default function BookDialogEdit({
   const [categoryChanged, setCategoryChanged] = useState(category._id);
   const [file, setFile] = useState(`https://nodejs-auth-restapi-crud.herokuapp.com/${cover}`);
   const [coverImage, setCoverImage] = useState(cover);
+
+  const { addToast } = useToasts();
 
   const fileHandler = (event) => {
     console.log(event.target.files[0]);
@@ -65,6 +68,9 @@ export default function BookDialogEdit({
       handleCloseDialogEdit();
       setIsEdit((prev) => !prev);
       setIsOpen(false);
+      addToast('Edit Book Successfully', { appearance: 'success' });
+    } else {
+      addToast('Something wrong, Please try again!', { appearance: 'warning' });
     }
   };
 

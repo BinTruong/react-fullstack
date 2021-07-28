@@ -19,5 +19,6 @@ export const booksApi = {
     });
     return apiHandler.put(`/apis/books/${id}`, bodyFormData);
   },
-  deleteBook: (id) => apiHandler.delete(`/apis/books/${id}`)
+  deleteBook: (id) => apiHandler.delete(`/apis/books/${id}`),
+  getDetailBook: (id) => apiHandler.get(`/apis/books/${id}`)
 };

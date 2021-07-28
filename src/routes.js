@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import DashboardApp from './pages/DashboardApp';
 import Products from './pages/Products';
+import ProductDetails from './pages/ProductDetails';
 import Blog from './pages/Blog';
 import User from './pages/User';
 import Category from './pages/Category';
@@ -31,6 +32,7 @@ export default function Router() {
         { path: 'category', element: <Category /> },
         { path: 'book', element: <Book /> },
         { path: 'products', element: <Products /> },
+        { path: 'products/:_id', element: <ProductDetails /> },
         { path: 'blog', element: <Blog /> }
       ]
     },

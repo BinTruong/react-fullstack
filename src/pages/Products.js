@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 // material
 import Pagination from '@material-ui/core/Pagination';
 import { Container, Stack, Typography, Grid } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 // components
 import Page from '../components/Page';
 import {
@@ -11,6 +12,7 @@ import {
   // ProductCartWidget,
   ProductFilterSidebar
 } from '../components/_dashboard/products';
+
 //
 // import PRODUCTS from '../_mocks_/products';
 
@@ -28,10 +30,11 @@ export default function EcommerceShop() {
   const [totalPages, setTotalPages] = useState(0);
   const [books, setBooks] = useState([]);
   const [keyWord, setKeyword] = useState('');
+  const [isLoading, setIsLoading] = useState();
 
   useEffect(() => {
     const getBooks = async () => {
-      // setIsLoading(false);
+      setIsLoading(true);
       const conditions = {
         keyword: keyWord,
         page,
@@ -49,7 +52,7 @@ export default function EcommerceShop() {
         setBooks(bookList);
         setTotalPages(totalPages);
       }
-      // setIsLoading(true);
+      setIsLoading(false);
     };
     getBooks();
   }, [page, rowsPerPage, keyWord, order, orderBy]);
@@ -87,39 +90,44 @@ export default function EcommerceShop() {
   };
 
   return (
-    <Page title="Dashboard: Products | Minimal-UI">
-      <Container>
-        <Typography variant="h4" sx={{ mb: 5 }}>
-          Products
-        </Typography>
-
-        <Stack
-          direction="row"
-          flexWrap="wrap-reverse"
-          alignItems="center"
-          justifyContent="flex-end"
-          sx={{ mb: 5 }}
-        >
-          <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
-            <ProductFilterSidebar
-              formik={formik}
-              isOpenFilter={openFilter}
-              onResetFilter={handleResetFilter}
-              onOpenFilter={handleOpenFilter}
-              onCloseFilter={handleCloseFilter}
-            />
-            <ProductSort />
+    <>
+      <Page title="Dashboard: Products | Minimal-UI">
+        <Container>
+          <Stack direction="row" spacing={3}>
+            <Typography variant="h4" sx={{ mb: 5 }}>
+              Products
+            </Typography>
+            {isLoading && <CircularProgress />}
           </Stack>
-        </Stack>
 
-        <ProductList products={books} />
-        {/* <ProductCartWidget /> */}
-        <Grid container spacing={0} direction="column" alignItems="center" justify="center">
-          <Stack m={2}>
-            <Pagination count={totalPages} color="primary" page={page} onChange={handleChange} />
+          <Stack
+            direction="row"
+            flexWrap="wrap-reverse"
+            alignItems="center"
+            justifyContent="flex-end"
+            sx={{ mb: 5 }}
+          >
+            <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
+              <ProductFilterSidebar
+                formik={formik}
+                isOpenFilter={openFilter}
+                onResetFilter={handleResetFilter}
+                onOpenFilter={handleOpenFilter}
+                onCloseFilter={handleCloseFilter}
+              />
+              <ProductSort />
+            </Stack>
           </Stack>
-        </Grid>
-      </Container>
-    </Page>
+
+          <ProductList products={books} />
+          {/* <ProductCartWidget /> */}
+          <Grid container spacing={0} direction="column" alignItems="center" justify="center">
+            <Stack m={2}>
+              <Pagination count={totalPages} color="primary" page={page} onChange={handleChange} />
+            </Stack>
+          </Grid>
+        </Container>
+      </Page>
+    </>
   );
 }

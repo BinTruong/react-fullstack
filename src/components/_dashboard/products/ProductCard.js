@@ -23,30 +23,35 @@ ShopProductCard.propTypes = {
 };
 
 export default function ShopProductCard({ product }) {
-  const { cover, title, category, description, author } = product;
+  const { _id, cover, title, category } = product;
 
   return (
     <Card>
-      <Box sx={{ pt: '50%', position: 'relative' }}>
-        <ProductImgStyle alt={title} src={`http://localhost:3001/${cover}`} />
-      </Box>
+      <Link
+        to={`/dashboard/products/${_id}`}
+        color="inherit"
+        underline="none"
+        component={RouterLink}
+      >
+        <Box sx={{ pt: '50%', position: 'relative' }}>
+          <ProductImgStyle alt={title} src={`http://localhost:3001/${cover}`} />
+        </Box>
 
-      <Stack spacing={2} sx={{ p: 3 }}>
-        <Link to="#" color="inherit" underline="hover" component={RouterLink}>
+        <Stack spacing={2} sx={{ p: 3 }}>
           <Typography variant="subtitle2" noWrap>
             {title}
           </Typography>
-        </Link>
 
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Button variant="outlined">{category.title}</Button>
-          <Typography variant="subtitle1">
+          <Stack direction="row" alignItems="center" justifyContent="space-between">
+            <Button variant="outlined">{category.title}</Button>
+            {/* <Typography variant="subtitle1">
             <Typography component="span" variant="body1">
               {author}
             </Typography>
-          </Typography>
+          </Typography> */}
+          </Stack>
         </Stack>
-      </Stack>
+      </Link>
     </Card>
   );
 }

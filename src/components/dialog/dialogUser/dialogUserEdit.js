@@ -85,7 +85,7 @@ export default function UserDialogEdit({
     }
   });
 
-  const { errors, touched, handleSubmit, getFieldProps } = formik;
+  const { errors, touched, handleSubmit, getFieldProps, isSubmitting } = formik;
   return (
     <div>
       <Dialog
@@ -167,7 +167,7 @@ export default function UserDialogEdit({
                     size="large"
                     type="submit"
                     variant="contained"
-                    // loading={isSubmitting}
+                    loading={isSubmitting}
                   >
                     Update
                   </LoadingButton>

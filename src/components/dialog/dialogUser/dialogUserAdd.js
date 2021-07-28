@@ -47,6 +47,7 @@ export default function UserDialogAdd({ open, handleClose, setIsCreate }) {
       handleClose();
       setIsCreate((prev) => !prev);
     } else {
+      handleClose();
       addToast('Something wrong, Please try again!', { appearance: 'warning' });
     }
   };
@@ -75,7 +76,7 @@ export default function UserDialogAdd({ open, handleClose, setIsCreate }) {
     }
   });
 
-  const { errors, touched, handleSubmit, getFieldProps } = formik;
+  const { errors, touched, handleSubmit, getFieldProps, isSubmitting } = formik;
   return (
     <div>
       <Dialog
@@ -157,7 +158,7 @@ export default function UserDialogAdd({ open, handleClose, setIsCreate }) {
                     size="large"
                     type="submit"
                     variant="contained"
-                    // loading={isSubmitting}
+                    loading={isSubmitting}
                   >
                     Add
                   </LoadingButton>

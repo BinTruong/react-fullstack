@@ -87,7 +87,7 @@ export default function BookDialogAdd({
     }
   });
 
-  const { errors, touched, handleSubmit, getFieldProps } = formik;
+  const { errors, touched, handleSubmit, getFieldProps, isSubmitting } = formik;
   return (
     <div>
       <Dialog
@@ -160,7 +160,7 @@ export default function BookDialogAdd({
                     size="large"
                     type="submit"
                     variant="contained"
-                    // loading={isSubmitting}
+                    loading={isSubmitting}
                   >
                     Add
                   </LoadingButton>

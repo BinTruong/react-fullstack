@@ -29,7 +29,7 @@ export default function BookDialogEdit({
 }) {
   const { _id, cover, title, category, description, author } = row;
   const [categoryChanged, setCategoryChanged] = useState(category._id);
-  const [file, setFile] = useState(`https://nodejs-auth-restapi-crud.herokuapp.com/${cover}`);
+  const [file, setFile] = useState(`http://localhost:3001/${cover}`);
   const [coverImage, setCoverImage] = useState(cover);
 
   const { addToast } = useToasts();
@@ -86,7 +86,7 @@ export default function BookDialogEdit({
     }
   });
 
-  const { errors, touched, handleSubmit, getFieldProps } = formik;
+  const { errors, touched, handleSubmit, getFieldProps, isSubmitting } = formik;
   return (
     <div>
       <Dialog
@@ -159,7 +159,7 @@ export default function BookDialogEdit({
                     size="large"
                     type="submit"
                     variant="contained"
-                    // loading={isSubmitting}
+                    loading={isSubmitting}
                   >
                     Update
                   </LoadingButton>

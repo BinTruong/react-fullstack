@@ -206,7 +206,7 @@ export default function Book() {
                           <TableCell>
                             <CardMedia
                               sx={{ height: 120, width: 120 }}
-                              image={`https://nodejs-auth-restapi-crud.herokuapp.com/${cover}`}
+                              image={`http://localhost:3001/${cover}`}
                               title="Cover"
                             />
                           </TableCell>

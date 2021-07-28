@@ -49,7 +49,7 @@ export default function CategoryDialogEdit({
     }
   });
 
-  const { errors, touched, handleSubmit, getFieldProps } = formik;
+  const { errors, touched, handleSubmit, getFieldProps, isSubmitting } = formik;
   return (
     <div>
       <Dialog
@@ -78,7 +78,7 @@ export default function CategoryDialogEdit({
                     size="large"
                     type="submit"
                     variant="contained"
-                    // loading={isSubmitting}
+                    loading={isSubmitting}
                   >
                     Update
                   </LoadingButton>

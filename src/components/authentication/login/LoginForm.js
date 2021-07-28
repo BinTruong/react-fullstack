@@ -126,7 +126,7 @@ export default function LoginForm() {
           size="large"
           type="submit"
           variant="contained"
-          // loading={isSubmitting}
+          loading={isSubmitting}
         >
           Login
         </LoadingButton>

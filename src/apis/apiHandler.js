@@ -4,7 +4,7 @@ import { store } from '../store';
 
 // Set config defaults when creating the instance
 const instance = axios.create({
-  baseURL: 'https://nodejs-auth-restapi-crud.herokuapp.com/'
+  baseURL: 'http://localhost:3001/'
 });
 
 store.subscribe(() => {

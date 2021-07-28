@@ -1,7 +1,8 @@
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // material
-import { Container, Stack, Typography } from '@material-ui/core';
+import Pagination from '@material-ui/core/Pagination';
+import { Container, Stack, Typography, Grid } from '@material-ui/core';
 // components
 import Page from '../components/Page';
 import {
@@ -11,12 +12,47 @@ import {
   ProductFilterSidebar
 } from '../components/_dashboard/products';
 //
-import PRODUCTS from '../_mocks_/products';
+// import PRODUCTS from '../_mocks_/products';
 
+import { booksApi, categoriesApi } from '../apis';
 // ----------------------------------------------------------------------
 
 export default function EcommerceShop() {
   const [openFilter, setOpenFilter] = useState(false);
+
+  const [page, setPage] = useState(1);
+  const [order, setOrder] = useState('-');
+  const [orderBy, setOrderBy] = useState('_id');
+  const [rowsPerPage, setRowsPerPage] = useState(8);
+  const [totalDocs, setTotalDocs] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [books, setBooks] = useState([]);
+  const [keyWord, setKeyword] = useState('');
+
+  useEffect(() => {
+    const getBooks = async () => {
+      // setIsLoading(false);
+      const conditions = {
+        keyword: keyWord,
+        page,
+        limit: rowsPerPage,
+        sort_column: orderBy,
+        sort_direction: order
+      };
+      const result = await booksApi.pageHome(conditions);
+
+      if (result.data) {
+        const { docs: bookList, limit, page, totalDocs, totalPages } = result.data.books;
+        setPage(page);
+        setRowsPerPage(limit);
+        setTotalDocs(totalDocs);
+        setBooks(bookList);
+        setTotalPages(totalPages);
+      }
+      // setIsLoading(true);
+    };
+    getBooks();
+  }, [page, rowsPerPage, keyWord, order, orderBy]);
 
   const formik = useFormik({
     initialValues: {
@@ -46,6 +82,10 @@ export default function EcommerceShop() {
     resetForm();
   };
 
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
+
   return (
     <Page title="Dashboard: Products | Minimal-UI">
       <Container>
@@ -72,8 +112,13 @@ export default function EcommerceShop() {
           </Stack>
         </Stack>
 
-        <ProductList products={PRODUCTS} />
+        <ProductList products={books} />
         {/* <ProductCartWidget /> */}
+        <Grid container spacing={0} direction="column" alignItems="center" justify="center">
+          <Stack m={2}>
+            <Pagination count={totalPages} color="primary" page={page} onChange={handleChange} />
+          </Stack>
+        </Grid>
       </Container>
     </Page>
   );

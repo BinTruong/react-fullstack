@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 // material
 import { Box, Card, Typography, Stack } from '@material-ui/core';
@@ -51,12 +50,13 @@ export default function ProductDetails() {
 
             <Stack direction="row" alignItems="center" justifyContent="space-between">
               <Button variant="outlined">{bookDetails.category}</Button>
-              {/* <Typography variant="subtitle1">
-            <Typography component="span" variant="body1">
-              {author}
-            </Typography>
-          </Typography> */}
             </Stack>
+            <Typography variant="subtitle2" noWrap>
+              {bookDetails.author}
+            </Typography>
+            <Typography variant="subtitle2" noWrap>
+              {bookDetails.description}
+            </Typography>
           </Stack>
         </Card>
       )}

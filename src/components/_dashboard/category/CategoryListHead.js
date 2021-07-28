@@ -55,7 +55,7 @@ export default function CategoryListHead({
               {headCell.label}
               {orderBy === headCell.id ? (
                 <Box sx={{ ...visuallyHidden }}>
-                  {direction === '-' ? 'sorted descending' : 'sorted ascending'}
+                  {direction === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </Box>
               ) : null}
             </TableSortLabel>

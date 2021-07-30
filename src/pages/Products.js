@@ -1,16 +1,32 @@
-import { useFormik } from 'formik';
-import { useState, useEffect } from 'react';
+import { debounce } from 'lodash';
+// import { useFormik } from 'formik';
+import { useState, useEffect, useRef } from 'react';
 // material
 import Pagination from '@material-ui/core/Pagination';
-import { Container, Stack, Typography, Grid } from '@material-ui/core';
+import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { Icon } from '@iconify/react';
+import searchFill from '@iconify/icons-eva/search-fill';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import {
+  Container,
+  Stack,
+  Typography,
+  Grid,
+  Box,
+  OutlinedInput,
+  InputAdornment
+} from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 // components
 import Page from '../components/Page';
 import {
-  ProductSort,
-  ProductList,
+  // ProductSort,
+  ProductList
   // ProductCartWidget,
-  ProductFilterSidebar
+  // ProductFilterSidebar
 } from '../components/_dashboard/products';
 
 //
@@ -19,8 +35,21 @@ import {
 import { booksApi, categoriesApi } from '../apis';
 // ----------------------------------------------------------------------
 
+const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
+  width: 240,
+  transition: theme.transitions.create(['box-shadow', 'width'], {
+    easing: theme.transitions.easing.easeInOut,
+    duration: theme.transitions.duration.shorter
+  }),
+  '&.Mui-focused': { width: 320, boxShadow: theme.customShadows.z8 },
+  '& fieldset': {
+    borderWidth: `1px !important`,
+    borderColor: `${theme.palette.grey[500_32]} !important`
+  }
+}));
+
 export default function EcommerceShop() {
-  const [openFilter, setOpenFilter] = useState(false);
+  // const [openFilter, setOpenFilter] = useState(false);
 
   const [page, setPage] = useState(1);
   const [order, setOrder] = useState('-');
@@ -31,11 +60,15 @@ export default function EcommerceShop() {
   const [books, setBooks] = useState([]);
   const [keyWord, setKeyword] = useState('');
   const [isLoading, setIsLoading] = useState();
+  const [filterName, setFilterName] = useState('');
+  const [listCategory, setListCategory] = useState([]);
+  const [category, setCategory] = useState('');
 
   useEffect(() => {
     const getBooks = async () => {
       setIsLoading(true);
       const conditions = {
+        filterCategory: category,
         keyword: keyWord,
         page,
         limit: rowsPerPage,
@@ -55,38 +88,64 @@ export default function EcommerceShop() {
       setIsLoading(false);
     };
     getBooks();
-  }, [page, rowsPerPage, keyWord, order, orderBy]);
+  }, [page, rowsPerPage, keyWord, order, orderBy, category]);
 
-  const formik = useFormik({
-    initialValues: {
-      gender: '',
-      category: '',
-      colors: '',
-      priceRange: '',
-      rating: ''
-    },
-    onSubmit: () => {
-      setOpenFilter(false);
-    }
-  });
+  useEffect(() => {
+    const getListCategory = async () => {
+      const result = await categoriesApi.getCategory();
+      if (result.data) {
+        setListCategory(result.data.categories);
+        // setDefaultCategory(result.data.categories[0]._id);
+      }
+    };
+    getListCategory();
+  }, []);
 
-  const { resetForm, handleSubmit } = formik;
-
-  const handleOpenFilter = () => {
-    setOpenFilter(true);
+  const handleFilterCategory = (event) => {
+    setPage(1);
+    setKeyword('');
+    setFilterName('');
+    setCategory(event.target.value);
   };
 
-  const handleCloseFilter = () => {
-    setOpenFilter(false);
-  };
+  // const formik = useFormik({
+  //   initialValues: {
+  //     gender: '',
+  //     category: '',
+  //     colors: '',
+  //     priceRange: '',
+  //     rating: ''
+  //   },
+  //   onSubmit: () => {
+  //     setOpenFilter(false);
+  //   }
+  // });
 
-  const handleResetFilter = () => {
-    handleSubmit();
-    resetForm();
-  };
+  // const { resetForm, handleSubmit } = formik;
+
+  // const handleOpenFilter = () => {
+  //   setOpenFilter(true);
+  // };
+
+  // const handleCloseFilter = () => {
+  //   setOpenFilter(false);
+  // };
+
+  // const handleResetFilter = () => {
+  //   handleSubmit();
+  //   resetForm();
+  // };
 
   const handleChange = (event, value) => {
     setPage(value);
+  };
+
+  const debounceSearch = useRef(debounce((value) => setKeyword(value), 1000)).current;
+  const handleFilter = (event) => {
+    // setRowsPerPage(5);
+    setFilterName(event.target.value);
+    debounceSearch(event.target.value);
+    setPage(1);
   };
 
   return (
@@ -102,12 +161,39 @@ export default function EcommerceShop() {
 
           <Stack
             direction="row"
-            flexWrap="wrap-reverse"
             alignItems="center"
-            justifyContent="flex-end"
+            justifyContent="space-between"
+            mb={5}
             sx={{ mb: 5 }}
           >
-            <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
+            <SearchStyle
+              value={filterName}
+              onChange={handleFilter}
+              placeholder="Search book..."
+              startAdornment={
+                <InputAdornment position="start">
+                  <Box component={Icon} icon={searchFill} sx={{ color: 'text.disabled' }} />
+                </InputAdornment>
+              }
+            />
+            <FormControl style={{ minWidth: 320 }}>
+              <InputLabel id="demo-simple-select-label">Filter by Category</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={category}
+                label="Filter by Category"
+                onChange={handleFilterCategory}
+              >
+                <MenuItem value="">All</MenuItem>
+                {listCategory.map((item) => (
+                  <MenuItem key={item._id} value={item._id}>
+                    {item.title}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            {/* <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
               <ProductFilterSidebar
                 formik={formik}
                 isOpenFilter={openFilter}
@@ -116,7 +202,7 @@ export default function EcommerceShop() {
                 onCloseFilter={handleCloseFilter}
               />
               <ProductSort />
-            </Stack>
+            </Stack> */}
           </Stack>
 
           <ProductList products={books} />

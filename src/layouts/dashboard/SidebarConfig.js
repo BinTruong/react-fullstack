@@ -19,15 +19,20 @@ const sidebarConfig = [
     path: '/dashboard/app',
     icon: getIcon(pieChart2Fill)
   },
+  // {
+  //   title: 'product',
+  //   path: '/dashboard/products',
+  //   icon: getIcon(shoppingBagFill)
+  // },
+  // {
+  //   title: 'blog',
+  //   path: '/dashboard/blog',
+  //   icon: getIcon(fileTextFill)
+  // },
   {
-    title: 'product',
-    path: '/dashboard/products',
-    icon: getIcon(shoppingBagFill)
-  },
-  {
-    title: 'blog',
-    path: '/dashboard/blog',
-    icon: getIcon(fileTextFill)
+    title: 'book',
+    path: '/dashboard/book',
+    icon: getIcon(bookFill)
   }
   // {
   //   title: 'user',
@@ -61,11 +66,6 @@ const siderAdmin = [
     title: 'category',
     path: '/dashboard/category',
     icon: getIcon(pantoneOutline)
-  },
-  {
-    title: 'book',
-    path: '/dashboard/book',
-    icon: getIcon(bookFill)
   }
 ];
 

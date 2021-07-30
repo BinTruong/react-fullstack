@@ -27,12 +27,7 @@ export default function ShopProductCard({ product }) {
 
   return (
     <Card>
-      <Link
-        to={`/dashboard/products/${_id}`}
-        color="inherit"
-        underline="none"
-        component={RouterLink}
-      >
+      <Link to={`/home/products/${_id}`} color="inherit" underline="none" component={RouterLink}>
         <Box sx={{ pt: '50%', position: 'relative' }}>
           <ProductImgStyle alt={title} src={`http://localhost:3001/${cover}`} />
         </Box>

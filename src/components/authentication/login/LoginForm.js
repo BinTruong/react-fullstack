@@ -46,7 +46,7 @@ export default function LoginForm() {
       };
       dispatch(authActions.setUserInfo(data));
       addToast('Login Successfully', { appearance: 'success' });
-      navigate('/dashboard', { replace: true });
+      navigate('/home', { replace: true });
     } else {
       addToast('Something wrong, Please try again!', { appearance: 'warning' });
     }

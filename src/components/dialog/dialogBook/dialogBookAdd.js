@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useToasts } from 'react-toast-notifications';
 import * as Yup from 'yup';
 import { useState } from 'react';
@@ -16,6 +17,14 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { booksApi } from '../../../apis';
 
+BookDialogAdd.propTypes = {
+  open: PropTypes.bool,
+  handleClose: PropTypes.func,
+  setIsCreate: PropTypes.bool,
+  listCategory: PropTypes.object,
+  defaultCategory: PropTypes.object
+};
+
 export default function BookDialogAdd({
   open,
   handleClose,
@@ -32,7 +41,7 @@ export default function BookDialogAdd({
   const fileHandler = (event) => {
     console.log(event.target.files[0]);
     const reader = new FileReader();
-    reader.onload = function (e) {
+    reader.onload = (e) => {
       setFile(e.target.result);
     };
     setCover(event.target.files[0]);

@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import { Form, FormikProvider } from 'formik';
 import closeFill from '@iconify/icons-eva/close-fill';
 import roundClearAll from '@iconify/icons-ic/round-clear-all';
-import roundFilterList from '@iconify/icons-ic/round-filter-list';
+// import roundFilterList from '@iconify/icons-ic/round-filter-list';
 // material
 import {
   Box,
@@ -62,7 +62,7 @@ ShopFilterSidebar.propTypes = {
 export default function ShopFilterSidebar({
   isOpenFilter,
   onResetFilter,
-  onOpenFilter,
+  // onOpenFilter,
   onCloseFilter,
   formik
 }) {

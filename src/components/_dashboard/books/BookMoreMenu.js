@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useToasts } from 'react-toast-notifications';
 import { Icon } from '@iconify/react';
 import { useRef, useState } from 'react';
@@ -14,7 +15,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import BookDialogEdit from '../../dialog/dialogBook/dialogBookEdit';
 import { booksApi } from '../../../apis';
 // ----------------------------------------------------------------------
-
+BookMoreMenu.propTypes = {
+  _id: PropTypes.string,
+  setIsRemove: PropTypes.func,
+  row: PropTypes.object,
+  listCategory: PropTypes.array,
+  setIsEdit: PropTypes.bool
+};
 export default function BookMoreMenu({ _id, setIsRemove, setIsEdit, row, listCategory }) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);

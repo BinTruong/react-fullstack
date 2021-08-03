@@ -1,7 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Stack, AppBar, Toolbar, IconButton } from '@material-ui/core';
+import { Box, Stack, AppBar, Toolbar } from '@material-ui/core';
 // components
 //
 // import Searchbar from './Searchbar';

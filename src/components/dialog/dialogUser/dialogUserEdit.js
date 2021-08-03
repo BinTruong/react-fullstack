@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useToasts } from 'react-toast-notifications';
 import * as Yup from 'yup';
 import { useState } from 'react';
@@ -18,6 +19,14 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { usersApi } from '../../../apis';
+
+UserDialogEdit.propTypes = {
+  openDialogEdit: PropTypes.bool,
+  handleCloseDialogEdit: PropTypes.func,
+  setIsEdit: PropTypes.bool,
+  row: PropTypes.object,
+  setIsOpen: PropTypes.bool
+};
 
 export default function UserDialogEdit({
   openDialogEdit,

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useToasts } from 'react-toast-notifications';
 import * as Yup from 'yup';
 import { useState } from 'react';
@@ -7,17 +8,26 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { Icon } from '@iconify/react';
+// import { Icon } from '@iconify/react';
 import { useFormik, Form, FormikProvider } from 'formik';
-import eyeFill from '@iconify/icons-eva/eye-fill';
-import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
-import { Stack, TextField, IconButton, InputAdornment } from '@material-ui/core';
+// import eyeFill from '@iconify/icons-eva/eye-fill';
+// import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
+import { Stack, TextField } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { booksApi } from '../../../apis';
+
+BookDialogEdit.propTypes = {
+  openDialogEdit: PropTypes.bool,
+  handleCloseDialogEdit: PropTypes.func,
+  setIsEdit: PropTypes.bool,
+  row: PropTypes.object,
+  listCategory: PropTypes.object,
+  setIsOpen: PropTypes.bool
+};
 
 export default function BookDialogEdit({
   openDialogEdit,
@@ -37,7 +47,7 @@ export default function BookDialogEdit({
   const fileHandler = (event) => {
     console.log(event.target.files[0]);
     const reader = new FileReader();
-    reader.onload = function (e) {
+    reader.onload = (e) => {
       setFile(e.target.result);
     };
     setCoverImage(event.target.files[0]);

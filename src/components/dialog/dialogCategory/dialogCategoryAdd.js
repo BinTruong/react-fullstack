@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useToasts } from 'react-toast-notifications';
 import * as Yup from 'yup';
 // import Button from '@material-ui/core/Button';
@@ -10,6 +11,12 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import { Stack, TextField } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { categoriesApi } from '../../../apis';
+
+CategoryDialogAdd.propTypes = {
+  open: PropTypes.bool,
+  handleClose: PropTypes.func,
+  setIsCreate: PropTypes.bool
+};
 
 export default function CategoryDialogAdd({ open, handleClose, setIsCreate }) {
   const RegisterSchema = Yup.object().shape({

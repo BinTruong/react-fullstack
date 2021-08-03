@@ -31,7 +31,7 @@ export default function ProductDetails() {
       }
     };
     getDetailsBook();
-  }, []);
+  }, [_id]);
   return (
     <>
       {bookDetails && (

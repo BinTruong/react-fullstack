@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useToasts } from 'react-toast-notifications';
 import { Icon } from '@iconify/react';
 import { useRef, useState } from 'react';
@@ -14,7 +15,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import UserCategoryEdit from '../../dialog/dialogCategory/dialogCategoryEdit';
 import { categoriesApi } from '../../../apis';
 // ----------------------------------------------------------------------
-
+CategoryMoreMenu.propTypes = {
+  _id: PropTypes.string,
+  setIsRemove: PropTypes.func,
+  row: PropTypes.object,
+  setIsEdit: PropTypes.bool
+};
 export default function CategoryMoreMenu({ _id, setIsRemove, setIsEdit, row }) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);

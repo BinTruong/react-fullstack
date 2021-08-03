@@ -1,5 +1,3 @@
-import { useSelector } from 'react-redux';
-
 import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
 import DashboardLayout from '../layouts/dashboard';
@@ -11,7 +9,7 @@ import Register from '../pages/Register';
 import DashboardApp from '../pages/DashboardApp';
 import Products from '../pages/Products';
 import ProductDetails from '../pages/ProductDetails';
-import Blog from '../pages/Blog';
+// import Blog from '../pages/Blog';
 import User from '../pages/User';
 import Category from '../pages/Category';
 import Book from '../pages/Book';

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useToasts } from 'react-toast-notifications';
 import * as Yup from 'yup';
 import Dialog from '@material-ui/core/Dialog';
@@ -8,6 +9,14 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import { Stack, TextField } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { categoriesApi } from '../../../apis';
+
+CategoryDialogEdit.propTypes = {
+  openDialogEdit: PropTypes.bool,
+  handleCloseDialogEdit: PropTypes.func,
+  setIsEdit: PropTypes.bool,
+  row: PropTypes.object,
+  setIsOpen: PropTypes.bool
+};
 
 export default function CategoryDialogEdit({
   openDialogEdit,

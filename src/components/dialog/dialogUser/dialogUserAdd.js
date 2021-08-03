@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useToasts } from 'react-toast-notifications';
 import * as Yup from 'yup';
 import { useState } from 'react';
@@ -18,6 +19,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { usersApi } from '../../../apis';
+
+UserDialogAdd.propTypes = {
+  open: PropTypes.bool,
+  handleClose: PropTypes.func,
+  setIsCreate: PropTypes.bool
+};
 
 export default function UserDialogAdd({ open, handleClose, setIsCreate }) {
   const [showPassword, setShowPassword] = useState(false);
